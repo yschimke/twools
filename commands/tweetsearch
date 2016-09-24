@@ -13,7 +13,7 @@ a.statuses.map(function(tweet) {
    if (tweet.entities) {
      if (tweet.entities.media) {
        tweet.entities.media.map(function(media) {
-         print(media.media_url_https + ":small");
+         show(media.media_url_https + ":thumb");
        });
      }
    }
