@@ -2,13 +2,16 @@
 
 var argumentString = arguments.map(encodeURIComponent).join("+");
 
-var a = query("https://api.twitter.com/1.1/search/tweets.json?q=" + argumentString)
+var a = query("https://api.twitter.com/1.1/search/tweets.json?tweet_mode=extended&q=" + argumentString)
 
 a.statuses.map(function(tweet) {
    var name = tweet.user.screen_name;
    name += "                    ".substring(0, Math.max(0, 20 - name.length()));
    name = name.substring(0, Math.min(20, name.length));
-   print(name + "\t" + tweet.text);
+
+   var text = tweet.full_text.replace(/\n/g, "\n                    \t");
+
+   print(name + "\t" + text);
 
    if (tweet.entities) {
      if (tweet.entities.media) {
