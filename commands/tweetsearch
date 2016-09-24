@@ -1,5 +1,20 @@
-#!/usr/bin/env okapi -m
+#!/usr/bin/env okshell
 
 var argumentString = arguments.map(encodeURIComponent).join("+");
 
-"https://api.twitter.com/1.1/search/tweets.json?q=" + argumentString
+var a = query("https://api.twitter.com/1.1/search/tweets.json?q=" + argumentString)
+
+a.statuses.map(function(tweet) {
+   var name = tweet.user.screen_name;
+   name += "                    ".substring(0, Math.max(0, 20 - name.length()));
+   name = name.substring(0, Math.min(20, name.length));
+   print(name + "\t" + tweet.text);
+
+   if (tweet.entities) {
+     if (tweet.entities.media) {
+       tweet.entities.media.map(function(media) {
+         print(media.media_url_https + ":small");
+       });
+     }
+   }
+});
