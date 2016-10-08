@@ -23,7 +23,7 @@ function postAndReadJson(url) {
 if (command == "list") {
 	var user = arguments[1];
 	var a = query("https://api.twitter.com/1.1/collections/list.json?screen_name=" + user);
-	
+
 	var collections = a.objects.timelines;
 
 	for (var key in collections) {
@@ -32,16 +32,16 @@ if (command == "list") {
 	}
 } else if (command == "entries") {
 	var key = arguments[1];
-	var a = query("https://api.twitter.com/1.1/collections/entries.json?id=" + key);
-	
+	var a = query("https://api.twitter.com/1.1/collections/entries.json?id=" + key + "&tweet_mode=extended");
+
 	var tweets = a.objects.tweets;
-	
+
 	for (var tweet_id in tweets) {
 		var tweet = tweets[tweet_id];
 		var user_id = tweet.user.id_str;
 		var user = a.objects.users[user_id];
-		
-		print(tweet.id_str + "\t@" + user.screen_name + "\t" + tweet.text);
+
+		print(tweet.id_str + "\t@" + user.screen_name + "\t" + tweet.full_text);
 
 	    if (tweet.entities) {
 	      if (tweet.entities.media) {
