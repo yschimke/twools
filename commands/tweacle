@@ -1,7 +1,5 @@
 #!/usr/bin/env okshell
 
-var loc = location();
-
 if (arguments.length < 1) {
   usage("usage: tweacle command [arguments]");
 }
