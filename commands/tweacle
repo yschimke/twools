@@ -4,7 +4,21 @@ if (arguments.length < 1) {
   usage("usage: tweacle command [arguments]");
 }
 
+var MediaType = Java.type('okhttp3.MediaType');
+var RequestBody = Java.type('okhttp3.RequestBody');
+
 var command = arguments[0];
+
+function postAndReadJson(url) {
+  var body = RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), "");
+
+  var request = requestBuilder
+    .url(url)
+    .method("POST", body)
+    .build();
+
+  return execute(request);
+}
 
 if (command == "list") {
 	var user = arguments[1];
@@ -36,5 +50,14 @@ if (command == "list") {
 	        });
 	      }
 	    }
+	}
+} else if (command == "add") {
+	var key = arguments[1];
+	var tweet_id = arguments[2];
+
+	var response = postAndReadJson("https://api.twitter.com/1.1/collections/entries/add.json?id=" + key + "&tweet_id=" + tweet_id);
+
+	if (response.response.errors.length > 0) {
+		print(response.response.errors);
 	}
 }
